@@ -48,7 +48,7 @@ namespace DataProvider
         public Person Update(Guid personId, string firstName, string lastName, int age)
         {
             var person = Get(personId) ?? throw new ArgumentException($"Aucune personne avec l'ID '{ personId }' n'a été trouvée.");
-            var updatedPerson = person with { FirstName = firstName, LastName = lastName, Age = age };
+            var updatedPerson = new Person(personId, firstName, lastName, age);
             _allPeople[personId] = updatedPerson;
             return updatedPerson;
         }
