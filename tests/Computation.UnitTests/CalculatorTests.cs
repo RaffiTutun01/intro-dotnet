@@ -50,7 +50,7 @@ namespace Computation.UnitTests
             Assert.Equal(3, actual);
         }
         [Fact]
-        public void SumNumbers_StartAt0SumNext100TotalIs5050()
+        public void SumNumbers_StartAt0SumNext100TotalIs4950()
         {
             var calculator = new Calculator();
 
