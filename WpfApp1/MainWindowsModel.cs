@@ -3,6 +3,7 @@ using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace WpfApp1
@@ -19,6 +20,9 @@ namespace WpfApp1
             LoadPeople();
             SelectPersonCommand = new ActionCommand(person => SelectPerson((Person)person));
             SaveCommand = new ActionCommand(Save);
+            DeleteCommand = new ActionCommand(Delete);
+            ResetForm = new ActionCommand(Reset);
+            SelectPerson(null);
         }
 
         private void LoadPeople()
@@ -38,6 +42,8 @@ namespace WpfApp1
         }
         public ICommand SelectPersonCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        public ICommand ResetForm { get; set; }
         public PersonViewModel? CurrentPerson
         {
             get => _currentPerson; set
@@ -49,11 +55,15 @@ namespace WpfApp1
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public void SelectPerson(Person person)
+        public void SelectPerson(Person? person)
         {
             if (person == null)
             {
-                CurrentPerson = null;
+                CurrentPerson = new PersonViewModel
+                {
+                    Id = Guid.NewGuid(),
+                    Age = 0
+                };
                 return;
             }
             CurrentPerson = new PersonViewModel
@@ -66,7 +76,39 @@ namespace WpfApp1
         }
         public void Save()
         {
-            _personRepository.Update(CurrentPerson.Id, CurrentPerson.FirstName, CurrentPerson.LastName, CurrentPerson.Age);
+            if (CurrentPerson == null)
+            {
+                Console.WriteLine("Cannot be null");
+            } else
+            {
+                bool exist = _personRepository.GetAll().Any(person => person.PersonId == CurrentPerson.Id);
+                if (exist)
+                {
+                    _personRepository.Update(CurrentPerson.Id, CurrentPerson.FirstName, CurrentPerson.LastName, CurrentPerson.Age);
+                } else
+                {
+                    Person person = _personRepository.Create(CurrentPerson.FirstName, CurrentPerson.LastName, CurrentPerson.Age);
+                    SelectPerson(person);
+                }
+            }
+            LoadPeople();
+        }
+
+        public void Delete()
+        {
+            if (CurrentPerson == null)
+                Console.WriteLine("Cannot be null");
+            else
+                _personRepository.Delete(CurrentPerson.Id);
+            LoadPeople();
+            SelectPerson(null);
+        }
+        public void Reset()
+        {
+            if (CurrentPerson == null)
+                Console.WriteLine("Cannot be null");
+            else
+                CurrentPerson = null;
             LoadPeople();
         }
     }

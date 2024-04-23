@@ -12,4 +12,9 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = new MainWindowsModel(new PersonRepository());
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

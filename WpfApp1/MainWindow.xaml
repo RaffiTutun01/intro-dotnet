@@ -32,6 +32,13 @@
             </ListView.ItemTemplate>
         </ListView>
         <StackPanel Orientation="Vertical" Grid.Column="1" >
+            <Button Height="27" Width="99" HorizontalAlignment="Right">
+                <Behaviors:Interaction.Triggers>
+                    <Behaviors:EventTrigger EventName="Click">
+                        <Behaviors:InvokeCommandAction Command="{Binding ResetForm}" />
+                    </Behaviors:EventTrigger>
+                </Behaviors:Interaction.Triggers> Reset form
+            </Button>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="First name: "/>
                 <TextBox Text="{Binding CurrentPerson.FirstName}"/>
@@ -44,16 +51,22 @@
                 <TextBlock Text="Age: "/>
                 <TextBox Text="{Binding CurrentPerson.Age}"/>
             </StackPanel>
-            <Button>
-                <Behaviors:Interaction.Triggers>
-                    <Behaviors:EventTrigger EventName="Click">
-                        <Behaviors:InvokeCommandAction Command="{Binding SaveCommand}" />
-                    </Behaviors:EventTrigger>
-                </Behaviors:Interaction.Triggers>
-                <Button.Content>
-                   Save
-                </Button.Content>
-            </Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="50,0,10,0">
+                <Button Background="#FF40FF00" Width="126" Content="Save" Click="Button_Click" Margin="0,0,10,0" Foreground="Black">
+                    <Behaviors:Interaction.Triggers>
+                        <Behaviors:EventTrigger EventName="Click">
+                            <Behaviors:InvokeCommandAction Command="{Binding SaveCommand}" />
+                        </Behaviors:EventTrigger>
+                    </Behaviors:Interaction.Triggers>
+                </Button>
+                <Button Background="#FFE30D0D" Width="127" Foreground="White">
+                    <Behaviors:Interaction.Triggers>
+                        <Behaviors:EventTrigger EventName="Click">
+                            <Behaviors:InvokeCommandAction Command="{Binding DeleteCommand}" />
+                        </Behaviors:EventTrigger>
+                    </Behaviors:Interaction.Triggers> Delete
+                </Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
