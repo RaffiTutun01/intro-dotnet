@@ -20,7 +20,7 @@ namespace Computation
 
             // TODO #3: Refactor to use the Aggregate() LINQ method
 
-            int res = Enumerable.Range(start, count).DefaultIfEmpty(0).Aggregate((a, b) => a + b);
+            int res = Enumerable.Range(start, count).Aggregate(0, (a, b) => a + b);
 
             return res;
         }
